@@ -1,0 +1,137 @@
+{
+  "name": "bughunter",
+  "displayName": "BugHunterAgent",
+  "description": "Covert debug skill training — secretly injects bugs, then coaches discovery",
+  "version": "0.1.0",
+  "publisher": "bughunter",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Education",
+    "Debuggers",
+    "Other"
+  ],
+  "keywords": [
+    "debug",
+    "training",
+    "bug hunting",
+    "skill development",
+    "debugging"
+  ],
+  "activationEvents": [
+    "onCommand:bughunter.showProfile",
+    "onCommand:bughunter.showSession",
+    "onCommand:bughunter.requestHint",
+    "onCommand:bughunter.claimSolved",
+    "onCommand:bughunter.surrender"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "bughunter.showProfile",
+        "title": "BugHunter: Show Profile & DSS Score",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "bughunter.showSession",
+        "title": "BugHunter: Show Active Session",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "bughunter.requestHint",
+        "title": "BugHunter: Request Hint",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "bughunter.claimSolved",
+        "title": "BugHunter: I Found the Bug!",
+        "icon": "$(check)"
+      },
+      {
+        "command": "bughunter.surrender",
+        "title": "BugHunter: Give Up",
+        "icon": "$(close)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "bughunter.requestHint",
+          "when": "bughunter:sessionActive",
+          "group": "navigation"
+        },
+        {
+          "command": "bughunter.claimSolved",
+          "when": "bughunter:sessionActive",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "bughunter",
+          "title": "BugHunterAgent",
+          "icon": "$(bug)"
+        }
+      ]
+    },
+    "views": {
+      "bughunter": [
+        {
+          "id": "bughunter.sessionView",
+          "name": "Active Session"
+        },
+        {
+          "id": "bughunter.profileView",
+          "name": "Profile"
+        },
+        {
+          "id": "bughunter.historyView",
+          "name": "Session History"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "BugHunterAgent",
+      "properties": {
+        "bughunter.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "URL of the BugHunterAgent API server"
+        },
+        "bughunter.hintsDisplayStyle": {
+          "type": "string",
+          "enum": ["panel", "notification", "inline"],
+          "default": "panel",
+          "description": "How to display Socratic hints"
+        },
+        "bughunter.showDssInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show DSS score in the status bar"
+        },
+        "bughunter.autoCheckSession": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically check for active sessions on startup"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  sandbox:
+    build: .
+    container_name: bughunter-sandbox
+    environment:
+      - BUGHUNTER_ENV=sandbox
+    volumes:
+      - ./bughunter:/sandbox/bughunter:ro
+      - sandbox-project:/sandbox/project
+      - bughunter-data:/root/.bughunter
+    working_dir: /sandbox/project
+    stdin_open: true
+    tty: true
+
+volumes:
+  sandbox-project:
+  bughunter-data:
